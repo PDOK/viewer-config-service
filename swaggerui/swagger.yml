@@ -1,0 +1,86 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: PDOK viewer-config-service
+
+servers:
+- url: https://service.pdok.nl/config/viewer/api/v1/
+paths:
+  /themes:
+    get:
+      summary: List all themes
+      operationId: listThemes
+      tags:
+      - themes
+      responses:
+        '200':
+          description: A paged array of themes containing all datasets with all layers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Theme"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Theme:
+      required:
+      - themeName
+      properties:
+        themeName:
+          type: string
+        datasets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dataset"
+    Dataset:
+      required:
+      - datasetName
+      properties:
+        datasetName:
+          type: string
+        services:
+          type: array
+          items:
+            $ref: "#/components/schemas/Service"
+    Service:
+      required:
+      - type
+      - title
+      - url
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        layers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Layer"
+    Layer:
+      required:
+      - name
+      - technicalName
+      properties:
+        name:
+          type: string
+        technicalName:
+          type: string
+        legendUrl:
+          type: string
+        maxResolution:
+          type: number
+        minResolution:
+          type: number
+    Error:
+      required:
+      - message
+      properties:
+        message:
+          type: string

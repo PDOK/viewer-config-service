@@ -1,0 +1,2 @@
+baseurl: "https://service.pdok.nl/"
+jsonfiles: "/srv/data/viewer-config-service/"
