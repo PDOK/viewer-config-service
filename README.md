@@ -1,7 +1,3 @@
-# Moved to https://github.com/kadaster-it/pdok-viewer-config-service.git
-
-This repo is archived and moved to github.com.
-
 # viewer-config-service
 De viewer-config-service serveert de configuratie gedefinieerd in [viewer-config-service-data](http://github.so.kadaster.nl/PDOK/viewer-config-service-data) voor de [pdok-viewer-angular](http://github.so.kadaster.nl/PDOK/pdok-viewer-angular).
 
