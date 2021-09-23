@@ -7,7 +7,11 @@ ENV GO111MODULE=on
 
 WORKDIR /go/src/service
 
-ADD . /go/src/service
+# docker cache go downloads
+COPY go.* ./
+RUN go mod download
+
+COPY . ./
 
 #disable crosscompiling
 ENV CGO_ENABLED=0
