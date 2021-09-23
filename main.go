@@ -80,7 +80,6 @@ func getConfig() *configuratie {
 func isJSON(str string) bool {
 	var js json.RawMessage
 	return json.Unmarshal([]byte(str), &js) == nil
-
 }
 
 func getThemePaths() []os.FileInfo {
@@ -163,22 +162,27 @@ func getCombinedJson() string {
 		datasetPaths := getDatasetPaths(t.Name())
 		for _, d := range datasetPaths {
 			if !strings.Contains(d.Name(), "base.json") {
-				file, err := os.Open(config.Jsonfiles + t.Name() + "/" + d.Name())
+				path := config.Jsonfiles + t.Name() + "/" + d.Name()
+				stat, err := os.Stat(path)
 				if err != nil {
 					log.Error(err)
 					continue
 				}
-
-				buffer := make([]byte, d.Size())
-				file.Read(buffer)
+				if stat.IsDir() {
+					continue
+				}
+				buffer, err := ioutil.ReadFile(path)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
 				json := string(buffer)
-				if isJSON(json) {
-					datasets = append(datasets, parseJson(d, t))
 
-				} else {
+				if !isJSON(json) {
 					log.Error("INVALID JSON: " + json)
 					continue
 				}
+				datasets = append(datasets, parseJson(d, t))
 			}
 		}
 		// base.json's vullen
